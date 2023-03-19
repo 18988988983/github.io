@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>查询示例</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    #results {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>查询示例</h1>
+  <input type="text" id="input-uin" placeholder="输入uin" />
+  <button id="search-button">查询</button>
+  <ul id="results"></ul>
+
+  <script>
+    document.getElementById('search-button').addEventListener('click', async () => {
+      const uin = document.getElementById('input-uin').value;
+      const url = `http://wskacchm.mini1.cn:4000/test/query_minicoin/?uin=898989`;
+      const response = await fetch(url);
+      const data = await response.json();
+      
+      const resultsList = document.getElementById('results');
+      resultsList.innerHTML = '';
+      
+      if (data && data.result && Array.isArray(data.result)) {
+        data.result.forEach(item => {
+          const listItem = document.createElement('li');
+          listItem.textContent = JSON.stringify(item);
+          resultsList.appendChild(listItem);
+        });
+      } else {
+        const listItem = document.createElement('li');
+        listItem.textContent = '没有找到结果';
+        resultsList.appendChild(listItem);
+      }
+    });
+  </script>
+</body>
+</html>
